@@ -52,10 +52,10 @@ class Hangman:
                     print(f"You have {self.tries} attempts remaining\n")
                     print(self.word_length)
                 elif self.guess_input not in self.word:
+                    self.tries -= 1
                     print(f"\n{self.guess_input} is NOT in the word")
                     print(f"You have {self.tries} attempts remaining\n")
                     self.guessed_letters.append(self.guess_input)
-                    self.tries -= 1
                     print(self.word_length)
                 else:
                     print(f"\nWell done {self.guess_input} is in the word")
@@ -74,10 +74,11 @@ class Hangman:
                     print(f"You have {self.tries} attempts remaining\n")
                     print(self.word_length)
                 elif self.guess_input != self.word:
+                    self.tries -= 1
                     print(f"\n{self.guess_input} is NOT the word")
                     print(f"You have {self.tries} attempts remaining\n")
                     self.guessed_words.append(self.guess_input)
-                    self.tries -= 1
+                    
                     print(self.word_length)
                 else:
                     print(f"\nWell done {self.guess_input} is the correct word!")
