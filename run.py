@@ -145,8 +145,8 @@ class Hangman:
                     print(f"\nWell done {self.guess_input} is the correct word!")
                     self.guess_correct = True
         if self.guess_correct:
-            print("WIN")
-            print(f"Congratulations {self.player_name} you guessed the correct word {self.word}\n")
+            print("You WON!")
+            print(f"Congratulations {self.player_name}, you guessed the correct word {self.word}\n")
             self.play_again = input("Play again? (Y / N): ").upper()
             if self.play_again == "Y":
                 Hangman(self.player_name).play_game()
@@ -156,7 +156,7 @@ class Hangman:
             else:
                 raise TypeError(f"You entered {self.play_again}. Please enter either Y or N")
         else:
-            print("LOSE")
+            print("You LOST!")
             print(f"The correct word was {self.word}.\nBetter luck next time!\n")
             self.play_again = input("Play again? (Y / N): ").upper()
             if self.play_again == "Y":
