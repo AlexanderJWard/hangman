@@ -7,7 +7,7 @@ import random
 from words import hangman_words
 
 
-class Game:
+class Hangman:
     def __init__(self, player_name):
         self.player_name = player_name
         self.tries = 5
@@ -17,16 +17,17 @@ class Game:
 
     def random_word(self):
         self.word = random.choice(hangman_words).upper()
-        self.word_length = "_ " * len(self.word)
+        self.word_length = "_" * len(self.word)
+        print(self.word_length)
 
     def data_validation(self):
-        self.validation = False
+        self.validation = False    
         while not self.validation:
             try:
                 self.guess_input = input("Enter a letter or word: ").upper()
                 if not self.guess_input.isalpha():
                     raise TypeError(
-                        f"Your guess {self.guess_input} does not contain alphabet letters.")
+                        f"\nYour guess {self.guess_input} does not contain alphabet letters.")
                 else:
                     self.validation = True
                     if len(self.guess_input) == 1:
@@ -34,31 +35,53 @@ class Game:
                     else:
                         self.guess_type = "word"
             except TypeError as e:
-                print(f"{e} Please enter a new guess")
+                print(f"\n{e} Please enter a new guess")
 
     def play_game(self):
-        Game.random_word(self)
-        print(self.word)
-        print(self.word_length)
-        Game.guess_validation(self)
-        print("Data Type Correct...")
-        print(self.guess_input)
-        print(self.guess_type)
+        Hangman.random_word(self)
+        print(f"\nYou have {self.tries} attempts remaining\n")
+        Hangman.guess_validation(self)
+
     
     def guess_validation(self):
         while not self.guess_correct and self.tries > 0:
-            Game.data_validation(self)
-            print(self.tries)
+            Hangman.data_validation(self)
             if self.guess_type == "letter":
                 if self.guess_input in self.guessed_letters:
-                    print(f"You already guessed the letter {self.guess_input}")
+                    print(f"\nYou already guessed the letter {self.guess_input}")
+                    print(f"You have {self.tries} attempts remaining\n")
+                    print(self.word_length)
                 elif self.guess_input not in self.word:
-                    print(f"{self.guess_input} is NOT in the word")
+                    print(f"\n{self.guess_input} is NOT in the word")
+                    print(f"You have {self.tries} attempts remaining\n")
                     self.guessed_letters.append(self.guess_input)
                     self.tries -= 1
+                    print(self.word_length)
                 else:
-                    print(f"Well done {self.guess_input} is in the word")
+                    print(f"\nWell done {self.guess_input} is in the word")
                     self.guessed_letters.append(self.guess_input)
+                    self.list_word = list(self.word_length)
+                    self.index = [i for i, letter in enumerate(self.word) if letter == self.guess_input]
+                    for i in self.index:
+                        self.list_word[i] = self.guess_input
+                    self.word_length = "".join(self.list_word)
+                    if "_" not in self.word_length:
+                        self.guess_correct = True
+                    print(self.word_length)
+            elif self.guess_type == "word":
+                if self.guess_input in self.guessed_words:
+                    print(f"\nYou already guessed the word {self.guess_input}")
+                    print(f"You have {self.tries} attempts remaining\n")
+                    print(self.word_length)
+                elif self.guess_input != self.word:
+                    print(f"\n{self.guess_input} is NOT the word")
+                    print(f"You have {self.tries} attempts remaining\n")
+                    self.guessed_words.append(self.guess_input)
+                    self.tries -= 1
+                    print(self.word_length)
+                else:
+                    print(f"\nWell done {self.guess_input} is the correct word!")
+                    self.guess_correct = True
         if self.guess_correct:
             print("WIN")
         else:
@@ -66,9 +89,9 @@ class Game:
 
 def main():
     print("Hangman\n")
-    player_name = input("Please enter your name: ")
+    player_name = input("Please enter your name: ").upper()
     print(f"\nWelcome {player_name}!")
-    Game(player_name).play_game()
+    Hangman(player_name).play_game()
 
 
 main()
