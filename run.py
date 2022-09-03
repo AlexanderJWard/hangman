@@ -10,20 +10,82 @@ from words import hangman_words
 class Hangman:
     def __init__(self, player_name):
         self.player_name = player_name
-        self.tries = 5
+        self.tries = 6
         self.guess_correct = False
         self.guessed_letters = []
         self.guessed_words = []
 
     def play_game(self):
+        Hangman.hangman_state(self)
         Hangman.random_word(self)
         print(f"\nYou have {self.tries} attempts remaining\n")
+        print(self.current_state[self.tries])
         Hangman.guess_validation(self)
 
     def random_word(self):
         self.word = random.choice(hangman_words).upper()
         self.word_length = "_" * len(self.word)
         print(self.word_length)
+
+    def hangman_state(self):
+        self.current_state = [
+            """
+            _______
+            |/  |
+            |   0
+            |  /|\\
+            |  / \\
+            |
+            """,
+            """
+            _______
+            |/  |
+            |   0
+            |  /|\\
+            |    \\
+            |
+            """,
+            """
+            _______
+            |/  |
+            |   0
+            |  /|\\
+            |
+            |
+            """,
+            """
+            _______
+            |/  |
+            |   0
+            |   |\\
+            |
+            |
+            """,
+            """
+            _______
+            |/  |
+            |   0
+            |   |
+            |
+            |
+            """,
+            """
+            _______
+            |/  |
+            |   0
+            |  
+            |  
+            |
+            """,
+            """
+            _______
+            |/  |
+            |   
+            |  
+            |  
+            |
+            """
+        ]
 
     def data_validation(self):
         self.validation = False    
@@ -54,6 +116,7 @@ class Hangman:
                     self.tries -= 1
                     print(f"\n{self.guess_input} is NOT in the word")
                     print(f"You have {self.tries} attempts remaining\n")
+                    print(self.current_state[self.tries])
                     self.guessed_letters.append(self.guess_input)
                     print(f"{self.word_length}\n")
                 else:
