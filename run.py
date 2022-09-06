@@ -14,13 +14,19 @@ class Hangman:
         self.guess_correct = False
         self.guessed_letters = []
         self.guessed_words = []
+        self.wins = 0
+        self.loses = 0
 
     def play_game(self):
-        Hangman.hangman_state(self)
-        Hangman.random_word(self)
+        self.hangman_state()
+        self.random_word()
+        self.tries = 6
+        self.guess_correct = False
+        self.guessed_letters = []
+        self.guessed_words = []
         print(f"\nYou have {self.tries} attempts remaining\n")
         print(self.current_state[self.tries])
-        Hangman.guess_validation(self)
+        self.guess_validation()
 
     def random_word(self):
         self.word = random.choice(hangman_words).upper()
@@ -88,7 +94,7 @@ class Hangman:
         ]
 
     def data_validation(self):
-        self.validation = False    
+        validation = False
         while not self.validation:
             try:
                 self.guess_input = input("Enter a letter or word: ").upper()
@@ -96,7 +102,7 @@ class Hangman:
                     raise TypeError(
                         f"Your guess {self.guess_input} does not contain alphabet letters.")
                 else:
-                    self.validation = True
+                    validation = True
                     if len(self.guess_input) == 1:
                         self.guess_type = "letter"
                     else:
@@ -106,10 +112,11 @@ class Hangman:
 
     def guess_validation(self):
         while not self.guess_correct and self.tries > 0:
-            Hangman.data_validation(self)
+            self.data_validation()
             if self.guess_type == "letter":
                 if self.guess_input in self.guessed_letters:
-                    print(f"\nYou already guessed the letter {self.guess_input}")
+                    print(
+                        f"\nYou already guessed the letter {self.guess_input}")
                     print(f"You have {self.tries} attempts remaining\n")
                     print(f"{self.word_length}\n")
                 elif self.guess_input not in self.word:
@@ -117,13 +124,14 @@ class Hangman:
                     print(f"\n{self.guess_input} is NOT in the word")
                     print(f"You have {self.tries} attempts remaining\n")
                     print(self.current_state[self.tries])
-                    self.guessed_letters.append(self.guess_input)
                     print(f"{self.word_length}\n")
+                    self.guessed_letters.append(self.guess_input)
                 else:
                     print(f"\nWell done {self.guess_input} is in the word\n")
                     self.guessed_letters.append(self.guess_input)
                     self.list_word = list(self.word_length)
-                    self.index = [i for i, letter in enumerate(self.word) if letter == self.guess_input]
+                    self.index = [i for i, letter in enumerate(
+                        self.word) if letter == self.guess_input]
                     for i in self.index:
                         self.list_word[i] = self.guess_input
                     self.word_length = "".join(self.list_word)
@@ -134,51 +142,67 @@ class Hangman:
                 if self.guess_input in self.guessed_words:
                     print(f"\nYou already guessed the word {self.guess_input}")
                     print(f"You have {self.tries} attempts remaining\n")
+                    print(self.current_state[self.tries])
                     print(f"{self.word_length}\n")
                 elif self.guess_input != self.word:
                     self.tries -= 1
                     print(f"\n{self.guess_input} is NOT the word")
                     print(f"You have {self.tries} attempts remaining\n")
-                    self.guessed_words.append(self.guess_input)
                     print(f"{self.word_length}\n")
+                    self.guessed_words.append(self.guess_input)
                 else:
-                    print(f"\nWell done {self.guess_input} is the correct word!")
+                    print(
+                        f"\nWell done {self.guess_input} is the correct word!")
                     self.guess_correct = True
         if self.guess_correct:
             print("You WON!")
             print("""
 
-               \0/
+               \\0/
                 |
                / \\
             """)
-            print(f"Congratulations {self.player_name}, you guessed the correct word {self.word}\n")
-            self.play_again = input("Play again? (Y / N): ").upper()
-            if self.play_again == "Y":
-                Hangman(self.player_name).play_game()
-            elif self.play_again == "N":
-                print(f"\nGood bye {self.player_name}. Try again next time.")
-                exit()
-            else:
-                raise TypeError(f"You entered {self.play_again}. Please enter either Y or N")
-        else:
-            print("You LOST!")
-            print(f"The correct word was {self.word}.\nBetter luck next time!\n")
+            print(
+                f"Congratulations {self.player_name}, you guessed the correct word {self.word}\n")
             self.play_again_validation = False
             while not self.play_again_validation:
                 try:
                     self.play_again = input("Play again? (Y / N): ").upper()
                     if self.play_again == "Y":
                         self.play_again_validation = True
-                        Hangman(self.player_name).play_game()
+                        self.play_game()
                     elif self.play_again == "N":
                         self.play_again_validation = True
-                        print(f"\nGood bye {self.player_name}. Try again next time.\n")
+                        print(
+                            f"\nGood bye {self.player_name}. Try again next time.\n")
                         exit()
                     else:
-                        raise TypeError(f"You entered {self.play_again}. Please enter either Y or N")
+                        raise TypeError(
+                            f"You entered {self.play_again}. Please enter either Y or N")
                 except TypeError as e:
                     print(f"{e}")
+        else:
+            print("You LOST!")
+            print(
+                f"The correct word was {self.word}.\nBetter luck next time!\n")
+            self.play_again_validation = False
+            while not self.play_again_validation:
+                try:
+                    self.play_again = input("Play again? (Y / N): ").upper()
+                    if self.play_again == "Y":
+                        self.play_again_validation = True
+                        self.play_game()
+                    elif self.play_again == "N":
+                        self.play_again_validation = True
+                        print(
+                            f"\nGood bye {self.player_name}. Try again next time.\n")
+                        exit()
+                    else:
+                        raise TypeError(
+                            f"You entered {self.play_again}.\n Please enter either Y or N")
+                except TypeError as e:
+                    print(f"{e}")
+
 
 def main():
     print("Hangman\n")
