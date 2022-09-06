@@ -95,7 +95,7 @@ class Hangman:
 
     def data_validation(self):
         validation = False
-        while not self.validation:
+        while not validation:
             try:
                 self.guess_input = input("Enter a letter or word: ").upper()
                 if not self.guess_input.isalpha():
