@@ -18,15 +18,16 @@ class Hangman:
         self.loses = 0
 
     def play_game(self):
-        self.hangman_state()
         self.random_word()
         self.tries = 6
         self.correct_word = False
         self.guessed_letters = []
         self.guessed_words = []
+        self.hangman_state()
         print(f"\nYou have {self.tries} attempts remaining\n")
         print(self.current_state[self.tries])
-        self.guess_validation()
+        self.random_word()
+        self.data_validation()
 
     def random_word(self):
         self.word = random.choice(hangman_words).upper()
@@ -134,13 +135,21 @@ class Hangman:
         print(f"\nWell done! Your guess {self.guess_input} is correct\n")
 
     def guess_wrong(self):
-        print("a")
+        self.tries -= 1
+        print(f"\nYour guess {self.guess_input} is WRONG.\n")
+        print(f"Your guessed letters: {self.guessed_letters}")
+        print(f"Your guessed words: {self.guessed_words}")
+        print(f"You have {self.tries} attempts remaining\n")
+        print(self.current_state[self.tries])
+        print(f"{self.word_length}\n")
+        self.data_validation()
 
     def already_guessed(self):
         print(f"\nYou already guessed {self.guess_input}\n")
         print(f"Your guessed letters: {self.guessed_letters}")
         print(f"Your guessed words: {self.guessed_words}")
         print(f"\nYou have {self.tries} attempts remaining\n")
+        print(self.current_state[self.tries])
         print(f"{self.word_length}\n")
         self.data_validation()
 
