@@ -32,7 +32,7 @@ class Hangman:
     def random_word(self):
         self.word = random.choice(hangman_words).upper()
         self.word_length = "_" * len(self.word)
-        print(self.word_length)
+        print(f"{self.word_length}\n")
 
     def hangman_state(self):
         self.current_state = [
@@ -108,7 +108,7 @@ class Hangman:
                     if len(self.guess_input) == 1:
                         self.letter_guess()
                     else:
-                        self.guess_type = "word"
+                        self.word_guess()
             except TypeError as e:
                 print(f"\n{e} Please enter a new guess\n")
 
@@ -177,7 +177,19 @@ class Hangman:
             self.lose_game()
 
     def word_guess(self):
-        print("a")
+        while not self.correct_word and self.tries > 0:
+            if self.guess_input in self.guessed_words:
+                self.already_guessed()
+            elif self.guess_input != self.word:
+                self.guessed_words.append(self.guess_input)
+                self.guess_wrong()
+            else:
+                print(f"\nCORRECT! {self.guess_input} is the word.")
+                self.correct_word = True
+        if self.correct_word:
+            self.win_game()
+        else:
+            self.lose_game()
 
     def win_game(self):
         print("win")
