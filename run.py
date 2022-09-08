@@ -18,7 +18,6 @@ class Hangman:
         self.loses = 0
 
     def play_game(self):
-        self.random_word()
         self.tries = 6
         self.correct_word = False
         self.guessed_letters = []
@@ -132,64 +131,59 @@ class Hangman:
                 print(f"{e}")
 
     def guess_correct(self):
-        print(f"\nWell done! Your guess {self.guess_input} is correct\n")
+        if "_" not in self.word_length:
+            self.win_game()
+        else:
+            print(f"\nYour guess {self.guess_input} is CORRECT.\n")
+            print(self.current_state[self.tries])
+            print(f"{self.word_length}\n")
+            self.data_validation()
 
     def guess_wrong(self):
         self.tries -= 1
-        print(f"\nYour guess {self.guess_input} is WRONG.\n")
-        print(f"Your guessed letters: {self.guessed_letters}")
-        print(f"Your guessed words: {self.guessed_words}")
-        print(f"You have {self.tries} attempts remaining\n")
-        print(self.current_state[self.tries])
-        print(f"{self.word_length}\n")
-        self.data_validation()
+        if self.tries > 0:
+            print(f"\nYour guess {self.guess_input} is WRONG.\n")
+            print(f"Your guessed letters: {self.guessed_letters}")
+            print(f"Your guessed words: {self.guessed_words}\n")
+            print(f"You have {self.tries} attempts remaining\n")
+            print(self.current_state[self.tries])
+            print(f"{self.word_length}\n")
+            self.data_validation()
+        else:
+            self.lose_game()
 
     def already_guessed(self):
         print(f"\nYou already guessed {self.guess_input}\n")
         print(f"Your guessed letters: {self.guessed_letters}")
-        print(f"Your guessed words: {self.guessed_words}")
+        print(f"Your guessed words: {self.guessed_words}\n")
         print(f"\nYou have {self.tries} attempts remaining\n")
         print(self.current_state[self.tries])
         print(f"{self.word_length}\n")
         self.data_validation()
 
     def letter_guess(self):
-        while not self.correct_word and self.tries > 0:
-            if self.guess_input in self.guessed_letters:
-                self.already_guessed()
-            elif self.guess_input not in self.word:
-                self.guessed_letters.append(self.guess_input)
-                self.guess_wrong()
-            else:
-                self.guessed_letters.append(self.guess_input)
-                self.guess_correct()
-                self.list_word = list(self.word_length)
-                self.index = [i for i, letter in enumerate(
-                    self.word) if letter == self.guess_input]
-                for i in self.index:
-                    self.list_word[i] = self.guess_input
-                self.word_length = "".join(self.list_word)
-                if "_" not in self.word_length:
-                    self.correct_word = True
-        if self.correct_word:
-            self.win_game()
+        if self.guess_input in self.guessed_letters:
+            self.already_guessed()
+        elif self.guess_input not in self.word:
+            self.guessed_letters.append(self.guess_input)
+            self.guess_wrong()
         else:
-            self.lose_game()
+            self.guessed_letters.append(self.guess_input)
+            self.list_word = list(self.word_length)
+            self.index = [i for i, letter in enumerate(self.word) if letter == self.guess_input]
+            for i in self.index:
+                self.list_word[i] = self.guess_input
+            self.word_length = "".join(self.list_word)
+            self.guess_correct()
 
     def word_guess(self):
-        while not self.correct_word and self.tries > 0:
-            if self.guess_input in self.guessed_words:
-                self.already_guessed()
-            elif self.guess_input != self.word:
-                self.guessed_words.append(self.guess_input)
-                self.guess_wrong()
-            else:
-                print(f"\nCORRECT! {self.guess_input} is the word.")
-                self.correct_word = True
-        if self.correct_word:
-            self.win_game()
+        if self.guess_input in self.guessed_words:
+            self.already_guessed()
+        elif self.guess_input != self.word:
+            self.guessed_words.append(self.guess_input)
+            self.guess_wrong()
         else:
-            self.lose_game()
+            self.win_game()
 
     def win_game(self):
         print("win")
