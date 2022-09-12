@@ -198,6 +198,7 @@ class Hangman:
 
     def lose_game(self):
         print(f"\nYOU LOST! The correct word was {self.word}\n")
+        print(self.current_state[self.tries])
         self.loses += 1
         print(f"\nGames Won: {self.wins}")
         print(f"Games Lost: {self.loses}\n")
@@ -205,7 +206,7 @@ class Hangman:
 
 def main():
     print("Welcome to Hangman!\n")
-    player_name = input("Please enter your name: ").upper().strip
+    player_name = input("Please enter your name: ").upper().strip()
     print(f"\nWelcome {player_name}!")
     Hangman(player_name).play_game()
 
