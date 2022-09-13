@@ -28,13 +28,13 @@ class Hangman:
         self.wins = 0
         self.loses = 0
         self.hiscores = [self.player_name, self.wins, self.loses]
-        self.hiscore_index = WORKSHEET.col_values(1).index(self.player_name)
-
+        
     def update_hiscores(self):
+        hiscore_index = WORKSHEET.col_values(1).index(self.player_name)
         print(f"\nGames Won: {self.wins}")
         print(f"Games Lost: {self.loses}\n")
-        WORKSHEET.update_cell(self.hiscore_index + 1, 2, self.wins)
-        WORKSHEET.update_cell(self.hiscore_index + 1, 3, self.loses)
+        WORKSHEET.update_cell(hiscore_index + 1, 2, self.wins)
+        WORKSHEET.update_cell(hiscore_index + 1, 3, self.loses)
     
     def play_game(self):
         self.tries = 6
@@ -42,8 +42,9 @@ class Hangman:
         self.guessed_words = []
         self.hangman_state()
         if self.player_name in WORKSHEET.col_values(1):
-            self.wins = int(WORKSHEET.col_values(2)[self.hiscore_index])
-            self.loses = int(WORKSHEET.col_values(3)[self.hiscore_index])
+            hiscore_index = WORKSHEET.col_values(1).index(self.player_name)
+            self.wins = int(WORKSHEET.col_values(2)[hiscore_index])
+            self.loses = int(WORKSHEET.col_values(3)[hiscore_index])
         else:
             WORKSHEET.append_row(self.hiscores)
         print(f"\nYou have {self.tries} attempts remaining\n")
