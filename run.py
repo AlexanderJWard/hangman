@@ -6,6 +6,18 @@ from google.oauth2.service_account import Credentials
 import random
 from words import hangman_words
 
+SCOPE = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive.file",
+    "https://www.googleapis.com/auth/drive"
+    ]
+
+CREDS = Credentials.from_service_account_file('creds.json')
+SCOPED_CREDS = CREDS.with_scopes(SCOPE)
+GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
+SHEET = GSPREAD_CLIENT.open('hangman hiscores')
+WORKSHEET = SHEET.worksheet('hiscores')
+DATA = WORKSHEET.get_all_values()
 
 class Hangman:
     def __init__(self, player_name):
@@ -15,12 +27,25 @@ class Hangman:
         self.guessed_words = []
         self.wins = 0
         self.loses = 0
+        self.hiscores = [self.player_name, self.wins, self.loses]
+        self.hiscore_index = WORKSHEET.col_values(1).index(self.player_name)
 
+    def update_hiscores(self):
+        print(f"\nGames Won: {self.wins}")
+        print(f"Games Lost: {self.loses}\n")
+        WORKSHEET.update_cell(self.hiscore_index, 2, self.wins)
+        WORKSHEET.update_cell(self.hiscore_index, 3, self.loses)
+    
     def play_game(self):
         self.tries = 6
         self.guessed_letters = []
         self.guessed_words = []
         self.hangman_state()
+        if self.player_name in WORKSHEET.col_values(1):
+            self.wins = WORKSHEET.col_values(2)[self.hiscore_index]
+            self.loses = WORKSHEET.col_values(3)[self.hiscore_index]
+        else:
+            WORKSHEET.append_row(self.hiscores)
         print(f"\nYou have {self.tries} attempts remaining\n")
         print(self.current_state[self.tries])
         self.random_word()
@@ -192,16 +217,14 @@ class Hangman:
             """)
         print(f"\nYOU WON! The correct word was {self.word}\n")
         self.wins += 1
-        print(f"\nGames Won: {self.wins}")
-        print(f"Games Lost: {self.loses}\n")
+        self.update_hiscores()
         self.play_again()
 
     def lose_game(self):
         print(f"\nYOU LOST! The correct word was {self.word}\n")
         print(self.current_state[self.tries])
         self.loses += 1
-        print(f"\nGames Won: {self.wins}")
-        print(f"Games Lost: {self.loses}\n")
+        self.update_hiscores()
         self.play_again()
 
 def main():
@@ -209,6 +232,5 @@ def main():
     player_name = input("Please enter your name: ").upper().strip()
     print(f"\nWelcome {player_name}!")
     Hangman(player_name).play_game()
-
 
 main()
