@@ -18,8 +18,6 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('hangman hiscores')
 WORKSHEET = SHEET.worksheet('hiscores')
-DATA = WORKSHEET.get_all_values()
-
 
 class Hangman:
     def __init__(self, player_name):
@@ -48,7 +46,8 @@ class Hangman:
         self.data_validation()
 
     def view_hiscores(self):
-        sort = natsorted(DATA[1:], key=lambda x: x[1], reverse=True)
+        hiscore_data = WORKSHEET.get_all_values()
+        sort = natsorted(hiscore_data[1:], key=lambda x: x[1], reverse=True)
         top_five = sort[0:5]
         print("\nTOP 5 Players\n")
         for player in top_five:
