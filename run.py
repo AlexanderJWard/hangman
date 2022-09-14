@@ -5,6 +5,7 @@ import gspread
 from google.oauth2.service_account import Credentials
 import random
 from words import hangman_words
+from natsort import natsorted, ns
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -36,21 +37,51 @@ class Hangman:
         WORKSHEET.update_cell(hiscore_index + 1, 2, self.wins)
         WORKSHEET.update_cell(hiscore_index + 1, 3, self.loses)
     
-    def play_game(self):
+    def start_game(self):
         self.tries = 6
         self.guessed_letters = []
         self.guessed_words = []
         self.hangman_state()
-        if self.player_name in WORKSHEET.col_values(1):
-            hiscore_index = WORKSHEET.col_values(1).index(self.player_name)
-            self.wins = int(WORKSHEET.col_values(2)[hiscore_index])
-            self.loses = int(WORKSHEET.col_values(3)[hiscore_index])
-        else:
-            WORKSHEET.append_row(self.hiscores)
         print(f"\nYou have {self.tries} attempts remaining\n")
         print(self.current_state[self.tries])
         self.random_word()
         self.data_validation()
+
+    def view_hiscores(self):
+        sort = natsorted(DATA[1:], key = lambda x: x[1], reverse=True)
+        top_five = sort[0:5]
+        print("\nTOP 5 Players\n")
+        for player in top_five:
+            print(f"{player[0]:10s}| {player[1]:3s} WON | {player[2]:3s} LOST |")
+        self.menu()
+
+    def menu(self):
+        if self.player_name in WORKSHEET.col_values(1):
+            hiscore_index = WORKSHEET.col_values(1).index(self.player_name)
+            self.wins = int(WORKSHEET.col_values(2)[hiscore_index])
+            self.loses = int(WORKSHEET.col_values(3)[hiscore_index])
+            print(f"Welcome back {self.player_name}!")
+            print(f"\nGames Won: {self.wins}")
+            print(f"Games Lost: {self.loses}\n")
+        else:
+            WORKSHEET.append_row(self.hiscores)
+        validation = False
+        while not validation:
+            try:
+                print(f"\n1: Play Hangman")
+                print(f"2: View Hiscores\n")
+                menu_input = input("Please enter your selection: ").strip()
+                if menu_input == "1":
+                    validation = True
+                    self.start_game()
+                elif menu_input == "2":
+                    validation = True
+                    self.view_hiscores()
+                else:
+                    raise TypeError(
+                        f"\nYou entered {menu_input}. Please enter either 1 or 2\n")
+            except TypeError as e:
+                print(f"{e}")
 
     def random_word(self):
         self.word = random.choice(hangman_words).upper()
@@ -142,7 +173,7 @@ class Hangman:
                 play_again = input("Play again? (Y / N): ").upper().strip()
                 if play_again == "Y":
                     validation = True
-                    self.play_game()
+                    self.menu()
                 elif play_again == "N":
                     validation = True
                     print(
@@ -231,7 +262,6 @@ class Hangman:
 def main():
     print("Welcome to Hangman!\n")
     player_name = input("Please enter your name: ").upper().strip()
-    print(f"\nWelcome {player_name}!")
-    Hangman(player_name).play_game()
+    Hangman(player_name).menu()
 
 main()
