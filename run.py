@@ -16,6 +16,7 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('hangman hiscores')
 WORKSHEET = SHEET.worksheet('hiscores')
 
+
 class Hangman:
     """
     Hangman is a text based game where the player has to guess the correct
@@ -62,7 +63,7 @@ class Hangman:
         from the Google Sheet so the player can continue their account.
         The exisiting player is welcomed back and their wins and loses
         are displayed.
-        
+
         However if the player's name does not exist the player is welcomed
         and their name, wins and loses are added to the Google Sheet,
         note that the players wins and loses will both be 0.
@@ -112,11 +113,11 @@ class Hangman:
                 elif menu_input == "3":
                     validation = True
                     print(
-                        f"\nGood bye {self.player_name}. Please come back and try again!\n")
+                        f"\nGood bye {self.player_name}. Please come back and try again!\n")  # noqa
                     exit()
                 else:
                     raise TypeError(
-                        f"\nYou entered {menu_input}. Please enter 1, 2 or 3\n")
+                        f"\nYou entered {menu_input}. Please enter 1, 2 or 3\n")  # noqa
             except TypeError as e:
                 print(f"{e}")
 
@@ -246,7 +247,7 @@ class Hangman:
                     "Enter a letter or word: ").upper().strip()
                 if not self.guess_input.isalpha():
                     raise TypeError(
-                        f"Your guess {self.guess_input} contains NON alphabet characters.")
+                        f"Your guess {self.guess_input} contains NON alphabet characters.")  # noqa
                 else:
                     validation = True
                     if len(self.guess_input) == 1:
@@ -277,7 +278,7 @@ class Hangman:
         order is reversed so high numbers appear at the top and the column
         names are removed from the selection. This data is then sorted into a
         list of the top 5 and printed in a for loop. menu_options is then
-        called to return back to the menu. 
+        called to return back to the menu.
         """
         hiscore_data = WORKSHEET.get_all_values()
         sort = natsorted(hiscore_data[1:], key=lambda x: x[1], reverse=True)
@@ -285,7 +286,7 @@ class Hangman:
         print("\nLeaderboard - Top 5 Players\n")
         for player in top_five:
             print(
-                f"{player[0]:10s} | {player[1]:3s} WON | {player[2]:3s} LOST |")
+                f"{player[0]:10s} | {player[1]:3s} WON | {player[2]:3s} LOST |")  # noqa
         self.menu_options()
 
     def play_again(self):
@@ -310,11 +311,11 @@ class Hangman:
                 elif play_again == "N":
                     validation = True
                     print(
-                        f"\nGood bye {self.player_name}. Please come back and try again!\n")
+                        f"\nGood bye {self.player_name}. Please come back and try again!\n")  # noqa
                     exit()
                 else:
                     raise TypeError(
-                        f"\nYou entered {play_again}. Please enter either Y or N\n")
+                        f"\nYou entered {play_again}. Please enter either Y or N\n")  # noqa
             except TypeError as e:
                 print(f"{e}")
 
@@ -419,14 +420,14 @@ class Hangman:
         update_leaderboard is called before play_again is called.
         """
         print("""
- __     ______  _    _  __          ______  _   _   _ 
+ __     ______  _    _  __          ______  _   _   _
  \ \   / / __ \| |  | | \ \        / / __ \| \ | | | |
   \ \_/ / |  | | |  | |  \ \  /\  / / |  | |  \| | | |
    \   /| |  | | |  | |   \ \/  \/ /| |  | | . ` | | |
     | | | |__| | |__| |    \  /\  / | |__| | |\  | |_|
     |_|  \____/ \____/      \/  \/   \____/|_| \_| (_)
-                                                      
-                                                      
+
+
             """)
         print(f"\nThe correct word was {self.word}\n")
         self.wins += 1
@@ -441,14 +442,14 @@ class Hangman:
         play_again is called.
         """
         print("""
- __     ______  _    _   _      ____   _____ _______   _ 
+ __     ______  _    _   _      ____   _____ _______   _
  \ \   / / __ \| |  | | | |    / __ \ / ____|__   __| | |
   \ \_/ / |  | | |  | | | |   | |  | | (___    | |    | |
    \   /| |  | | |  | | | |   | |  | |\___ \   | |    | |
     | | | |__| | |__| | | |___| |__| |____) |  | |    |_|
     |_|  \____/ \____/  |______\____/|_____/   |_|    (_)
-                                                         
-                                                         
+
+
         """)
         print(f"\nThe correct word was {self.word}\n")
         print(self.current_state[self.tries])
@@ -471,25 +472,25 @@ def main():
         If the input is greater than 10 in length
     """
     print("""
-  _    _                                         
- | |  | |                                        
- | |__| | __ _ _ __   __ _ _ __ ___   __ _ _ __  
- |  __  |/ _` | '_ \ / _` | '_ ` _ \ / _` | '_ \ 
+  _    _
+ | |  | |
+ | |__| | __ _ _ __   __ _ _ __ ___   __ _ _ __
+ |  __  |/ _` | '_ \ / _` | '_ ` _ \ / _` | '_ \
  | |  | | (_| | | | | (_| | | | | | | (_| | | | |
  |_|  |_|\__,_|_| |_|\__, |_| |_| |_|\__,_|_| |_|
-                      __/ |                      
-                     |___/\n                       
+                      __/ |
+                     |___/\n
     """)
     validation = False
     while not validation:
         try:
-            player_name = input("Please enter your player name: ").upper().strip()
+            player_name = input("Please enter your player name: ").upper().strip()  # noqa
             if len(player_name) > 10:
                 raise ValueError(
-                    f"\nYour player name {player_name} is too long.\nPlease enter a name less than 10 characters.\n")
+                    f"\nYour player name {player_name} is too long.\nPlease enter a name less than 10 characters.\n")  # noqa
             elif not player_name.isalpha():
                 raise TypeError(
-                    f"\nYour player name {player_name} contains NON alphabet characters.\nPlease enter a name using only alphabet characters.\n")
+                    f"\nYour player name {player_name} contains NON alphabet characters.\nPlease enter a name using only alphabet characters.\n")  # noqa
             else:
                 validation = True
         except (ValueError, TypeError) as e:
