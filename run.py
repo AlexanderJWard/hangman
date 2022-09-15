@@ -289,8 +289,7 @@ class Hangman:
         print("|  " + Fore.YELLOW + "RANK & NAME" + Fore.RESET + "  |  " + Fore.YELLOW + "WON" + Fore.RESET + "  |  " + Fore.YELLOW + "LOST" + Fore.RESET + "  |")  # noqa
         print("+---------------+-------+--------+")
         for player in top_five:
-            print(
-                "| " + Fore.YELLOW + f"{top_five.index(player) + 1}:" + Fore.RESET + f" {player[0]:10s} | " + Fore.GREEN + f" {player[1]:4s}" + Fore.RESET + " | " + Fore.RED + f" {player[2]:5s}" + Fore.RESET + " |" )  # noqa
+            print("| " + Fore.YELLOW + f"{top_five.index(player) + 1}:" + Fore.RESET + f" {player[0]:10s} | " + Fore.GREEN + f" {player[1]:4s}" + Fore.RESET + " | " + Fore.RED + f" {player[2]:5s}" + Fore.RESET + " |")  # noqa
             print("+---------------+-------+--------+")
         self.menu_options()
 
@@ -344,12 +343,12 @@ class Hangman:
             print("|", end=" ")
             for letter in self.guessed_letters:
                 print(Fore.YELLOW + letter + Fore.RESET + " |", end=" ")
-            print("\n") 
+            print("\n")
         if self.guessed_words:
             print("Your guessed words:\n")
             for word in self.guessed_words:
                 print("| " + Fore.YELLOW + word + Fore.RESET + " |\n")
-        
+
     def guess_correct(self):
         """
         guess_correct checks if there are any underscores remaining in
@@ -386,7 +385,7 @@ class Hangman:
             self.player_guess()
         else:
             self.lose_game()
-        
+
     def already_guessed(self):
         """
         already_guessed prints the guess alongside other already guessed
