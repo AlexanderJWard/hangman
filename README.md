@@ -1,7 +1,6 @@
 # Hangman
 
-- Screenshot of logo/navigation of mobile deployed site
-- Include a link to deployed project with one line explanation of project
+![image](https://user-images.githubusercontent.com/102811792/190385034-cdda6095-c2c0-4f1b-b0f1-e78621e2d52b.png)
 
 ## Author
 Alexander Ward
