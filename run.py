@@ -2,7 +2,7 @@ import gspread
 from google.oauth2.service_account import Credentials
 import random
 from words import hangman_words
-from natsort import natsorted, ns
+from natsort import natsorted
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -17,6 +17,51 @@ SHEET = GSPREAD_CLIENT.open('hangman hiscores')
 WORKSHEET = SHEET.worksheet('hiscores')
 
 
+class colors:
+    """
+    Colors class:reset all colors with colors.reset; two
+    sub classes fg for foreground
+    and bg for background; use as colors.subclass.colorname.
+    i.e. colors.fg.red or colors.bg.greenalso, the generic bold, disable,
+    underline, reverse, strike through,
+    and invisible work with the main class i.e. colors.bold
+    """
+    reset = '\033[0m'
+    bold = '\033[01m'
+    disable = '\033[02m'
+    underline = '\033[04m'
+    reverse = '\033[07m'
+    strikethrough = '\033[09m'
+    invisible = '\033[08m'
+ 
+    class fg:
+        black = '\033[30m'
+        red = '\033[31m'
+        green = '\033[32m'
+        orange = '\033[33m'
+        blue = '\033[34m'
+        purple = '\033[35m'
+        cyan = '\033[36m'
+        lightgrey = '\033[37m'
+        darkgrey = '\033[90m'
+        lightred = '\033[91m'
+        lightgreen = '\033[92m'
+        yellow = '\033[93m'
+        lightblue = '\033[94m'
+        pink = '\033[95m'
+        lightcyan = '\033[96m'
+ 
+    class bg:
+        black = '\033[40m'
+        red = '\033[41m'
+        green = '\033[42m'
+        orange = '\033[43m'
+        blue = '\033[44m'
+        purple = '\033[45m'
+        cyan = '\033[46m'
+        lightgrey = '\033[47m'
+
+
 class Hangman:
     """
     Hangman is a text based game where the player has to guess the correct
@@ -28,6 +73,7 @@ class Hangman:
     are recorded on a Google Sheet and the top 5 players can be viewed before
     playing the game.
     """
+
     def __init__(self, player_name):
         """
         Parameters
@@ -100,9 +146,9 @@ class Hangman:
         validation = False
         while not validation:
             try:
-                print(f"\n1: Play Hangman")
-                print(f"2: View Leaderboard")
-                print(f"3: Exit Game\n")
+                print("\n1: Play Hangman")
+                print("2: View Leaderboard")
+                print("3: Exit Game\n")
                 menu_input = input("Please enter your selection: ").strip()
                 if menu_input == "1":
                     validation = True
@@ -475,7 +521,7 @@ def main():
   _    _
  | |  | |
  | |__| | __ _ _ __   __ _ _ __ ___   __ _ _ __
- |  __  |/ _` | '_ \ / _` | '_ ` _ \ / _` | '_ \
+ |  __  |/ _` | '_ \ / _` | '_ ` _ \ / _` | '_ \\
  | |  | | (_| | | | | (_| | | | | | | (_| | | | |
  |_|  |_|\__,_|_| |_|\__, |_| |_| |_|\__,_|_| |_|
                       __/ |
