@@ -154,6 +154,10 @@ class Hangman:
         The player's current lives relate to the index of the current_state,
         lives start at 6 meaning the 7th image is displayed first. When the
         player has 0 lives left the 1st image in the list is displayed.
+
+        I've used the following tutorial for help with creating the hangman
+        image states below, this is found here:
+        https://github.com/kiteco/python-youtube-code/blob/master/build-hangman-in-python/hangman.py
         """
         self.current_state = [
             """
