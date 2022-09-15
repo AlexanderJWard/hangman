@@ -142,7 +142,7 @@ class Hangman:
         self.guessed_letters = []
         self.guessed_words = []
         self.hangman_state()
-        print(Fore.RED + f"\n{self.lives}" + Fore.RESET + " lives remaining")
+        self.print_lives()
         print(self.current_state[self.lives])
         self.random_word()
         self.player_guess()
@@ -327,8 +327,8 @@ class Hangman:
 
     def print_lives(self):
         """
-        print_lives checks if lives are above 1 and if true then lives remaining
-        is printed. If false then life remaining is printed instead.
+        print_lives checks if lives are above 1 and if true then lives
+        remaining is printed. If false then life remaining is printed instead.
         """
         if self.lives > 1:
             print(Fore.RED + f"{self.lives}" + Fore.RESET + " lives remaining")
@@ -341,13 +341,13 @@ class Hangman:
         and prints them neatly for the player to view.
         """
         if self.guessed_letters:
-            print("Your guessed letters:")
+            print("Your guessed letters:\n")
             print("|", end=" ")
             for letter in self.guessed_letters:
                 print(Fore.YELLOW + letter + Fore.RESET + " |", end=" ")
             print("\n") 
         if self.guessed_words:
-            print("Your guessed words:")
+            print("Your guessed words:\n")
             for word in self.guessed_words:
                 print("| " + Fore.YELLOW + word + Fore.RESET + " |\n")
         
@@ -362,7 +362,7 @@ class Hangman:
         if "_" not in self.word_length:
             self.win_game()
         else:
-            print(f"\nYour guess {self.guess_input} is CORRECT.\n")
+            print(f"\nYour guess " + Fore.YELLOW + f"{self.guess_input}" + Fore.RESET + " is " + Fore.GREEN + "CORRECT" + Fore.RESET + ".\n")  # noqa
             print(self.current_state[self.lives])
             print(f"{self.word_length}\n")
             self.player_guess()
@@ -381,7 +381,7 @@ class Hangman:
         if self.lives > 0:
             print(f"\nYour guess " + Fore.YELLOW + f"{self.guess_input}" + Fore.RESET + " is " + Fore.RED + "WRONG" + Fore.RESET + ".\n")  # noqa
             self.print_already_guessed()
-            print(Fore.RED + f"{self.lives}" + Fore.RESET + " lives remaining")
+            self.print_lives()
             print(self.current_state[self.lives])
             print(f"{self.word_length}\n")
             self.player_guess()
@@ -396,7 +396,7 @@ class Hangman:
         """
         print(f"\nYou already guessed " + Fore.YELLOW + f"{self.guess_input}\n" + Fore.RESET)  # noqa
         self.print_already_guessed()
-        print(Fore.RED + f"{self.lives}" + Fore.RESET + " lives remaining")
+        self.print_lives()
         print(self.current_state[self.lives])
         print(f"{self.word_length}\n")
         self.player_guess()
@@ -449,7 +449,7 @@ class Hangman:
         as showing them the correct word. Wins is incremented by 1 and
         update_leaderboard is called before play_again is called.
         """
-        print("""
+        print(Fore.GREEN + """
  __     ______  _    _  __          ______  _   _   _
  \ \   / / __ \| |  | | \ \        / / __ \| \ | | | |
   \ \_/ / |  | | |  | |  \ \  /\  / / |  | |  \| | | |
@@ -458,8 +458,8 @@ class Hangman:
     |_|  \____/ \____/      \/  \/   \____/|_| \_| (_)
 
 
-            """)
-        print(f"\nThe correct word was {self.word}\n")
+            """ + Fore.RESET)
+        print("\nThe correct word was " + Fore.GREEN + f"{self.word}" + Fore.RESET)  # noqa
         self.wins += 1
         self.update_leaderboard()
         self.play_again()
@@ -471,7 +471,7 @@ class Hangman:
         and Loses is incremented by 1. update_leaderboard is called before
         play_again is called.
         """
-        print("""
+        print(Fore.RED + """
  __     ______  _    _   _      ____   _____ _______   _
  \ \   / / __ \| |  | | | |    / __ \ / ____|__   __| | |
   \ \_/ / |  | | |  | | | |   | |  | | (___    | |    | |
@@ -480,9 +480,9 @@ class Hangman:
     |_|  \____/ \____/  |______\____/|_____/   |_|    (_)
 
 
-        """)
-        print(f"\nThe correct word was {self.word}\n")
+        """ + Fore.RESET)
         print(self.current_state[self.lives])
+        print("\nThe correct word was " + Fore.GREEN + f"{self.word}" + Fore.RESET)  # noqa
         self.loses += 1
         self.update_leaderboard()
         self.play_again()
