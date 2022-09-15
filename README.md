@@ -11,7 +11,40 @@ Hangman is a classic game that's instantly recognizable and the rules are easy e
 https://alexward-hangman.herokuapp.com/
 
 ## Table of Contents
-Generate after readme is complete for UX and below
+- [Hangman](#hangman)
+  * [Author](#author)
+  * [Project Overview](#project-overview)
+  * [Table of Contents](#table-of-contents)
+  * [How To Play/Use](#how-to-play-use)
+  * [Features](#features)
+    + [Implemented Features](#implemented-features)
+    + [Future Features](#future-features)
+  * [Design Documents](#design-documents)
+  * [Data Model/ Classes](#data-model--classes)
+    + [Class Hangman](#class-hangman)
+  * [Parameters](#parameters)
+  * [Attributes](#attributes)
+      - [Methods](#methods)
+  * [Libraries used](#libraries-used)
+  * [Testing](#testing)
+    + [Validation Testing](#validation-testing)
+    + [Manual Testing](#manual-testing)
+    + [Defect Tracking](#defect-tracking)
+    + [Defects of Note](#defects-of-note)
+    + [Outstanding Defects](#outstanding-defects)
+  * [Deployment](#deployment)
+    + [Requirements](#requirements)
+    + [Gitpod](#gitpod)
+    + [Heroku](#heroku)
+      - [Fork the repository](#fork-the-repository)
+      - [New Project](#new-project)
+      - [Settings](#settings)
+      - [Deploy](#deploy)
+  * [Credits](#credits)
+    + [Content](#content)
+    + [Acknowledgments](#acknowledgments)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
 ## How To Play/Use
 ![full-play](https://user-images.githubusercontent.com/102811792/190483375-787ef008-9610-42da-993e-2521cd5b25e9.gif)
@@ -102,7 +135,6 @@ __Guess Input__
 
 - If the guess contains any leading or trailing whitespace this'll be stripped and their answer will be accepted as long as it meets the above validation.
 ![guess-space-strip](https://user-images.githubusercontent.com/102811792/190492716-18669396-d18d-4cc9-9d3d-b6bd964666db.gif)
-
 
 __Guessed Letters & Words__
 - Any guesses the player has already entered will be displayed if an incorrect guess is made or the player enters one of the guesses already entered previously.
@@ -205,10 +237,6 @@ __colorama__
 __gspread & google.oauth__
 - Connect to Google Sheets API to amend and update the worksheet.
 
-List out the python libraries you purposefully used in your project and why. You can look at your requirements.txt file and go back to https://pypi.org/ to rediscover the purpose of a library if needed.
-
-A bulleted list is a good presentation for this information.
-
 ## Testing
 
 ### Validation Testing
@@ -221,12 +249,12 @@ __words.py__
 
 ### Manual Testing
 
-See the Google Sheet for a manual testing
+- Manual testing is located on this Google Sheets link:
 https://docs.google.com/spreadsheets/d/15s-Cuo20pmOgDNkJP7t2ED2AXKt8pIXcJWOQDQZM9Xw/edit?usp=sharing
 
 ### Defect Tracking
 
-Issues can be accessed from the following link: https://github.com/AlexanderJWard/hangman/issues
+- Issues can be accessed from the following link: https://github.com/AlexanderJWard/hangman/issues
 
 ### Defects of Note
 
