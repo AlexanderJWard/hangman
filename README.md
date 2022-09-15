@@ -125,9 +125,16 @@ __Play Again__
 ![play-again-no](https://user-images.githubusercontent.com/102811792/190495969-985501f9-0b06-4fa6-b13d-7d38503ffe14.gif)
 ![play-again-wrong](https://user-images.githubusercontent.com/102811792/190495918-6670fa5c-5e2e-4cb3-a969-b76a5dac1827.gif)
 
+__Google Sheet__
+
+- Google Sheet used showing the title, headers and worksheet name.
+
+![image](https://user-images.githubusercontent.com/102811792/190514909-ab8e6be2-819c-4ade-af5e-27e4990b837e.png)
+
 ### Future Features
 
 - Difficulty setting for both harder more obscure words and also varying amount of lives to make it harder or easier.
+- Add a 'your score' option to the leaderboard so if the player isn't in the top 5 they can still see their score.
 
 ## Design Documents
 
@@ -204,8 +211,6 @@ A bulleted list is a good presentation for this information.
 
 ## Testing
 
-
-
 ### Validation Testing
 
 __run.py__
@@ -216,60 +221,111 @@ __words.py__
 
 ### Manual Testing
 
-
+See the Google Sheet for a manual testing
+https://docs.google.com/spreadsheets/d/15s-Cuo20pmOgDNkJP7t2ED2AXKt8pIXcJWOQDQZM9Xw/edit?usp=sharing
 
 ### Defect Tracking
 
-
+Issues can be accessed from the following link: https://github.com/AlexanderJWard/hangman/issues
 
 ### Defects of Note
 
-
+- Getting the enumerate code to work when the player guesses correctly to replace the relevant underscore with the guessed letter.
 
 ### Outstanding Defects
 
-
-
-### Commenting Code
-
-
+- If player tries to enter a space in their name it will show an error.
+![image](https://user-images.githubusercontent.com/102811792/190524782-d6ea74fd-4456-442f-8ed3-bd403b4e6f4c.png)
 
 ## Deployment
 
 ### Requirements
 
+1. Google Account. https://accounts.google.com/Signup
 
+2. Google Drive API
+- Login to Google Cloud Platform: https://console.cloud.google.com/
+- Click 'Create Project'
+- Name the project and click create
+- Click 'select project'
+- In the left menu select APIs & Services and then select Library
+- Search for Google Drive, select the API and click 'Enable'
+- Click 'create credentials'
+![image](https://user-images.githubusercontent.com/102811792/190515966-e85a7177-1498-4ce0-a257-c05d2e10b9f7.png)
+![image](https://user-images.githubusercontent.com/102811792/190515996-b3c17865-92da-453e-a673-a0d65aee1e6d.png)
+![image](https://user-images.githubusercontent.com/102811792/190516031-093bac47-d091-4017-9324-0022a54bfbfb.png)
+![image](https://user-images.githubusercontent.com/102811792/190516070-e4af4ff4-d537-4274-9a7a-a2f5ed24562c.png)
+
+3. Google Sheets API
+- In the left menu select APIs & Services and then select Library
+- Search for Google Sheets, select the API and click 'Enable'
+
+4. Downloaded JSON file is the creds.json file. This'll need to be imput into Heroku.
+
+5. Share the Google Sheets with the client email address in the JSON file, making sure to give it Editor.
 
 ### Gitpod
+ 1. Copy JSON file into GitPod and rename to creds.json. The file should look like this inside:
+![image](https://user-images.githubusercontent.com/102811792/190518942-505b0977-395d-4808-b42d-f276d87dc268.png)
 
+2. Add creds.json to gitignore file.
 
+3. Install dependencies for gspread and google auth. 
+pip3 install gspread google-auth
+
+4. Install dependencies for natsort
+pip3 install natsort
+
+5. Install dependencies for colorama
+pip3 install colorama
+
+6. Update requirements.txt
+pip3 freeze > requirements.txt
 
 ### Heroku
 
-
 #### Fork the repository
 
+Make a fork to keep your own version of the repository as a copy. 
+![image](https://user-images.githubusercontent.com/102811792/190520574-972eaea5-9033-4827-8b14-99d941b9ff66.png)
 
 #### New Project
 
-
+Sign into Heroku and create a new project with a relevant name.
 
 #### Settings
 
+1. Navigate to the settings tab.
+![image](https://user-images.githubusercontent.com/102811792/190520802-c7d55b52-9bf7-4c10-845e-e95f86347667.png)
+
+2. Under Config Vars click 'Reveal Config Vars'
+![config](https://user-images.githubusercontent.com/102811792/190521112-8e31f1db-7b2a-4a9f-b33a-3afa7ff5d160.png)
+
+3. In the key box type CREDS and in the value box paste the contents of your creds.json file. Click add.
+
+4. Below your CREDS value enter PORT in the key box and 8000 in the value box. Click add.
+
+5. In buildpacks click 'Add buildpack' and select Python and nodejs, make sure Python is at the top after clicking save.
 
 #### Deploy
 
+1. Navigate to the deploy tab.
+![image](https://user-images.githubusercontent.com/102811792/190522061-950c9dfb-79a2-4291-9afa-ce8b92ecc905.png)
 
+2. In deployment method choose GitHub and connect to your account below.
+
+3. Automatic deploys, choose the main branch and enable automatic deploys.
 
 ## Credits
 
 ### Content
 
-
-### Media
-
+This tutorial gave me ideas for how the feel of the game should play out. The display_hangman in the tutorial was very helpful for my understanding of using the index of the list to display different states:
+https://www.youtube.com/watch?v=m4nEnsavl6w
+https://github.com/kiteco/python-youtube-code/blob/master/build-hangman-in-python/hangman.py
 
 ### Acknowledgments
 
-Google Sheets integration from Love Sandwiches
+Google Sheets integration from Love Sandwiches by Code Institute
+Code Institute template used: https://github.com/Code-Institute-Org/python-essentials-template
 
