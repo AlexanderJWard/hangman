@@ -134,6 +134,7 @@ __Guess Input__
 ![guess-non-alphabet](https://user-images.githubusercontent.com/102811792/190492544-f4ecae1c-1a93-4b6f-aa00-81ed0a719e9e.gif)
 
 - If the guess contains any leading or trailing whitespace this'll be stripped and their answer will be accepted as long as it meets the above validation.
+- 
 ![guess-space-strip](https://user-images.githubusercontent.com/102811792/190492716-18669396-d18d-4cc9-9d3d-b6bd964666db.gif)
 
 __Guessed Letters & Words__
