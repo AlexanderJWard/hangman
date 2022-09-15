@@ -285,14 +285,13 @@ class Hangman:
         hiscore_data = WORKSHEET.get_all_values()
         sort = natsorted(hiscore_data[1:], key=lambda x: x[1], reverse=True)
         top_five = sort[0:5]
-        print("\nLeaderboard - Top 5 Players\n")
-        print("+------------+-------+-------+")
-        print("| NAME       | WON   | LOST  |")
-        print("+------------+-------+-------+")
+        print("+---------------+-------+--------+")
+        print("|  " + Fore.YELLOW + "RANK & NAME" + Fore.RESET + "  |  " + Fore.YELLOW + "WON" + Fore.RESET + "  |  " + Fore.YELLOW + "LOST" + Fore.RESET + "  |")  # noqa
+        print("+---------------+-------+--------+")
         for player in top_five:
             print(
-                f"| {player[0]:10s} | " + Fore.GREEN + f"{player[1]:5s}" + Fore.RESET + " | " + Fore.RED + f"{player[2]:5s}" + Fore.RESET + " |" )  # noqa
-        print("+------------+-------+-------+")
+                "| " + Fore.YELLOW + f"{top_five.index(player) + 1}:" + Fore.RESET + f" {player[0]:10s} | " + Fore.GREEN + f" {player[1]:4s}" + Fore.RESET + " | " + Fore.RED + f" {player[2]:5s}" + Fore.RESET + " |" )  # noqa
+            print("+---------------+-------+--------+")
         self.menu_options()
 
     def play_again(self):
