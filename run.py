@@ -327,6 +327,8 @@ class Hangman:
 
     def print_lives(self):
         """
+        print_lives checks if lives are above 1 and if true then lives remaining
+        is printed. If false then life remaining is printed instead.
         """
         if self.lives > 1:
             print(Fore.RED + f"{self.lives}" + Fore.RESET + " lives remaining")
