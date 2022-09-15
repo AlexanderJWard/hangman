@@ -24,7 +24,7 @@ class Hangman:
     word by inputting letters to reveal correctly guessed ones. Once the
     player reveals all the correct letters in the word or the player guesses
     the word itself the game has been won. The player only has a set amount
-    of tries to win the game before they lose, their already guessed letters
+    of lives to win the game before they lose, their already guessed letters
     and words are displayed to help the user. The player name, wins and loses
     are recorded on a Google Sheet and the top 5 players can be viewed before
     playing the game.
@@ -39,7 +39,7 @@ class Hangman:
 
         Attributes
         ----------
-        tries : int
+        lives : int
             The amount of attempts before the player reaches the fail state
             of the game.
         guessed_letters : list, str
@@ -52,7 +52,7 @@ class Hangman:
             Keeps track of how many loses the player has
         """
         self.player_name = player_name
-        self.tries = 6
+        self.lives = 6
         self.guessed_letters = []
         self.guessed_words = []
         self.wins = 0
@@ -79,7 +79,7 @@ class Hangman:
             self.loses = int(WORKSHEET.col_values(3)[hiscore_index])
             print(f"\nWelcome back {self.player_name}!")
             print(Fore.GREEN + f"\nGames Won: {self.wins}")
-            print(Fore.RED + f"Games Lost: {self.loses}\n")
+            print(Fore.RED + f"Games Lost: {self.loses}\n" + Fore.RESET)
         else:
             WORKSHEET.append_row(leaderboard)
             print(f"\nWelcome {self.player_name}. Good Luck!")
@@ -125,10 +125,10 @@ class Hangman:
 
     def start_game(self):
         """
-        start_game sets the tries to 6 and empties the guessed_letter and
+        start_game sets the lives to 6 and empties the guessed_letter and
         guessed_words lists.
 
-        hangman_state is then called and the players current amount of tries
+        hangman_state is then called and the players current amount of lives
         is printed followed by an image of the current hangman state determined
         by the index of current_state.
 
@@ -138,12 +138,12 @@ class Hangman:
         player_guess is called to ask the player to input their guess of
         either a letter or word.
         """
-        self.tries = 6
+        self.lives = 6
         self.guessed_letters = []
         self.guessed_words = []
         self.hangman_state()
-        print(f"\nYou have {self.tries} attempts remaining\n")
-        print(self.current_state[self.tries])
+        print(Fore.RED + f"\n{self.lives}" + Fore.RESET + " lives remaining")
+        print(self.current_state[self.lives])
         self.random_word()
         self.player_guess()
 
@@ -151,9 +151,9 @@ class Hangman:
         """
         hangman_state contains all the hangman image states which are
         displayed when the player guesses the wrong letter or word.
-        The player's current tries relate to the index of the current_state,
-        tries start at 6 meaning the 7th image is displayed first. When the
-        player has 0 tries left the 1st image in the list is displayed.
+        The player's current lives relate to the index of the current_state,
+        lives start at 6 meaning the 7th image is displayed first. When the
+        player has 0 lives left the 1st image in the list is displayed.
         """
         self.current_state = [
             """
@@ -268,8 +268,8 @@ class Hangman:
         from the leaderboard.
         """
         hiscore_index = WORKSHEET.col_values(1).index(self.player_name)
-        print(f"\nGames Won: {self.wins}")
-        print(f"Games Lost: {self.loses}\n")
+        print(Fore.GREEN + f"\nGames Won: {self.wins}")
+        print(Fore.RED + f"Games Lost: {self.loses}\n" + Fore.RESET)
         WORKSHEET.update_cell(hiscore_index + 1, 2, self.wins)
         WORKSHEET.update_cell(hiscore_index + 1, 3, self.loses)
 
@@ -286,9 +286,13 @@ class Hangman:
         sort = natsorted(hiscore_data[1:], key=lambda x: x[1], reverse=True)
         top_five = sort[0:5]
         print("\nLeaderboard - Top 5 Players\n")
+        print("+------------+-------+-------+")
+        print("| NAME       | WON   | LOST  |")
+        print("+------------+-------+-------+")
         for player in top_five:
             print(
-                f"{player[0]:10s} | {player[1]:3s} WON | {player[2]:3s} LOST |")  # noqa
+                f"| {player[0]:10s} | " + Fore.GREEN + f"{player[1]:5s}" + Fore.RESET + " | " + Fore.RED + f"{player[2]:5s}" + Fore.RESET + " |" )  # noqa
+        print("+------------+-------+-------+")
         self.menu_options()
 
     def play_again(self):
@@ -306,7 +310,7 @@ class Hangman:
         validation = False
         while not validation:
             try:
-                play_again = input("Play again? (Y / N): ").upper().strip()
+                play_again = input("Play again? ( Y / N ): ").upper().strip()
                 if play_again == "Y":
                     validation = True
                     self.menu_options()
@@ -321,6 +325,30 @@ class Hangman:
             except TypeError as e:
                 print(f"{e}")
 
+    def print_lives(self):
+        """
+        """
+        if self.lives > 1:
+            print(Fore.RED + f"{self.lives}" + Fore.RESET + " lives remaining")
+        else:
+            print(Fore.RED + f"{self.lives}" + Fore.RESET + " life remaining")
+
+    def print_already_guessed(self):
+        """
+        print_already_guessed loops through guessed_letters and guessed_words
+        and prints them neatly for the player to view.
+        """
+        if self.guessed_letters:
+            print("Your guessed letters:")
+            print("|", end=" ")
+            for letter in self.guessed_letters:
+                print(Fore.YELLOW + letter + Fore.RESET + " |", end=" ")
+            print("\n") 
+        if self.guessed_words:
+            print("Your guessed words:")
+            for word in self.guessed_words:
+                print("| " + Fore.YELLOW + word + Fore.RESET + " |\n")
+        
     def guess_correct(self):
         """
         guess_correct checks if there are any underscores remaining in
@@ -333,43 +361,41 @@ class Hangman:
             self.win_game()
         else:
             print(f"\nYour guess {self.guess_input} is CORRECT.\n")
-            print(self.current_state[self.tries])
+            print(self.current_state[self.lives])
             print(f"{self.word_length}\n")
             self.player_guess()
 
     def guess_wrong(self):
         """
-        guess_wrong decreases the tries by 1. If the tries are above 0 a
+        guess_wrong decreases the lives by 1. If the lives are above 0 a
         message is shown informing the player their guess was wrong, it
         also prints their guessed letters and words followed by how many
         attempts they have left. The current state is printed and then the
         player_guess is called for the player to guess again.
 
-        If the tries are not greater than 0 then lose_game is called.
+        If the lives are not greater than 0 then lose_game is called.
         """
-        self.tries -= 1
-        if self.tries > 0:
-            print(f"\nYour guess {self.guess_input} is WRONG.\n")
-            print(f"Your guessed letters: {self.guessed_letters}")
-            print(f"Your guessed words: {self.guessed_words}\n")
-            print(f"You have {self.tries} attempts remaining")
-            print(self.current_state[self.tries])
+        self.lives -= 1
+        if self.lives > 0:
+            print(f"\nYour guess " + Fore.YELLOW + f"{self.guess_input}" + Fore.RESET + " is " + Fore.RED + "WRONG" + Fore.RESET + ".\n")  # noqa
+            self.print_already_guessed()
+            print(Fore.RED + f"{self.lives}" + Fore.RESET + " lives remaining")
+            print(self.current_state[self.lives])
             print(f"{self.word_length}\n")
             self.player_guess()
         else:
             self.lose_game()
-
+        
     def already_guessed(self):
         """
         already_guessed prints the guess alongside other already guessed
         letters and words. player_guess is then called for the player to
         guess again.
         """
-        print(f"\nYou already guessed {self.guess_input}\n")
-        print(f"Your guessed letters: {self.guessed_letters}")
-        print(f"Your guessed words: {self.guessed_words}\n")
-        print(f"\nYou have {self.tries} attempts remaining")
-        print(self.current_state[self.tries])
+        print(f"\nYou already guessed " + Fore.YELLOW + f"{self.guess_input}\n" + Fore.RESET)  # noqa
+        self.print_already_guessed()
+        print(Fore.RED + f"{self.lives}" + Fore.RESET + " lives remaining")
+        print(self.current_state[self.lives])
         print(f"{self.word_length}\n")
         self.player_guess()
 
@@ -454,7 +480,7 @@ class Hangman:
 
         """)
         print(f"\nThe correct word was {self.word}\n")
-        print(self.current_state[self.tries])
+        print(self.current_state[self.lives])
         self.loses += 1
         self.update_leaderboard()
         self.play_again()
