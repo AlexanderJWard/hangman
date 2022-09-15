@@ -3,7 +3,6 @@ from google.oauth2.service_account import Credentials
 import random
 from words import hangman_words
 from natsort import natsorted
-from colorama import init
 from colorama import Fore, Back, Style
 
 SCOPE = [
